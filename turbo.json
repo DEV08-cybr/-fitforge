@@ -1,0 +1,23 @@
+{
+  "pipeline": {
+    "build": {
+      "outputs": [
+        "apps/web/dist/**",
+        "apps/api/dist/**"
+      ]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "outputs": []
+    }
+  },
+  "global": {
+    "cache": {
+      "paths": [
+        "node_modules/**"
+      ]
+    }
+  }
+}

@@ -1,0 +1,17 @@
+export const exerciseCategories = {
+    CHEST: 'Chest',
+    BACK: 'Back',
+    SHOULDERS: 'Shoulders',
+    BICEPS: 'Biceps',
+    TRICEPS: 'Triceps',
+    FOREARMS: 'Forearms',
+    CORE: 'Core',
+    QUADRICEPS: 'Quadriceps',
+    HAMSTRINGS: 'Hamstrings',
+    GLUTES: 'Glutes',
+    CALVES: 'Calves',
+    FULL_BODY: 'Full Body',
+    CARDIO: 'Cardio',
+    MOBILITY: 'Mobility',
+    STRETCHING: 'Stretching',
+};

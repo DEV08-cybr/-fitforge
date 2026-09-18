@@ -1,0 +1,131 @@
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String?
+  email       String   @unique
+  password    String
+  fitnessPreferences FitnessPreferences?
+  workouts    Workout[]
+  favorites    Favorite[]
+  progress     Progress[]
+  weeklyPlans  WeeklyPlan[]
+  aiConversations AIConversation[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FitnessPreferences {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  experienceLevel String?
+  preferredLocation String?
+  availableEquipment String?
+  preferredDuration Int?
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Exercise {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  targetMuscle String
+  secondaryMuscles String?
+  equipment   String?
+  difficulty  String
+  category    String
+  instructions String
+  sets        Int?
+  repetitions Int?
+  rest        Int?
+  commonMistakes String?
+  safetyConsiderations String?
+  beginnerVariation String?
+  advancedVariation String?
+  alternativeExercises String?
+}
+
+model Workout {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  name        String
+  exercises   WorkoutExercise[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model WorkoutExercise {
+  id          Int      @id @default(autoincrement())
+  workoutId   Int
+  exerciseId  Int
+  sets        Int?
+  repetitions Int?
+  rest        Int?
+  workout     Workout   @relation(fields: [workoutId], references: [id])
+  exercise    Exercise  @relation(fields: [exerciseId], references: [id])
+}
+
+model CompletedWorkout {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  workoutId   Int
+  completedAt DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  workout     Workout   @relation(fields: [workoutId], references: [id])
+}
+
+model WorkoutHistory {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  workoutId   Int
+  date        DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+  workout     Workout   @relation(fields: [workoutId], references: [id])
+}
+
+model Favorite {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  exerciseId  Int
+  user        User     @relation(fields: [userId], references: [id])
+  exercise    Exercise  @relation(fields: [exerciseId], references: [id])
+}
+
+model Progress {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  date        DateTime @default(now())
+  metrics     Json
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model WeeklyPlan {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  plan        Json
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model AIConversation {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  messages     AIMessage[]
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model AIMessage {
+  id          Int      @id @default(autoincrement())
+  conversationId Int
+  content     String
+  sender      String
+  createdAt   DateTime @default(now())
+  conversation AIConversation @relation(fields: [conversationId], references: [id])
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
